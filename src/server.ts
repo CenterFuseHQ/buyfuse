@@ -4,7 +4,7 @@ import { BuyerWorkspaceService } from "@centerfuse/buyfuse-domain";
 import { PRODUCTS, resolveProductUrls } from "@centerfuse/config";
 import { renderBuyFuseDashboard, renderBuyFuseState } from "./page.js";
 
-const urls = resolveProductUrls(process.env); const port = Number(process.env.PORT ?? PRODUCTS.BUYFUSE.defaultPort);
+const urls = resolveProductUrls(process.env); const port = Number(process.env.PORT ?? PRODUCTS.BUYFUSE.defaultPort); const host = process.env.HOST ?? "127.0.0.1";
 const secret = process.env.AUTH_SECRET ?? (process.env.NODE_ENV === "production" ? "" : "buyfuse-local-development-secret-32chars");
 if (secret.length < 32) throw new Error("AUTH_SECRET must contain at least 32 characters");
 const identity = new InMemoryIdentityService({ secret, issuer: "centerfuse", audience: "buyfuse", defaultEntitlements: [buyFuseEntitlement] });
@@ -29,7 +29,7 @@ createServer(async (request, response) => {
     if (url.pathname.startsWith("/api/")) return send(response, 404, { error: "NOT_FOUND" });
     return send(response, 404, renderBuyFuseState("not-found", urls), "text/html; charset=utf-8");
   } catch (error) { const known = error instanceof Error && ["ACCOUNT_ALREADY_EXISTS", "INVALID_CREDENTIALS", "FORBIDDEN", "SAVED_ITEM_NOT_FOUND"].includes(error.message); return send(response, known ? 400 : 422, { error: known && error instanceof Error ? error.message : "INVALID_REQUEST" }); }
-}).listen(port, "127.0.0.1", () => console.info(JSON.stringify({ event: "app.started", product: "BUYFUSE", port })));
+}).listen(port, host, () => console.info(JSON.stringify({ event: "app.started", product: "BUYFUSE", host, port })));
 
 async function body(request: IncomingMessage): Promise<unknown> { const chunks: Buffer[] = []; let size = 0; for await (const chunk of request) { const value = Buffer.from(chunk); size += value.length; if (size > 32_768) throw new Error("REQUEST_TOO_LARGE"); chunks.push(value); } return JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}"); }
 function allow(key: string): boolean { const now = Date.now(); const current = attempts.get(key); if (!current || current.resetAt < now) { attempts.set(key, { count: 1, resetAt: now + 60_000 }); return true; } current.count += 1; return current.count <= 10; }
