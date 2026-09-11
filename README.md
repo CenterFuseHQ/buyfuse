@@ -19,6 +19,8 @@ npm run dev
 
 BuyFuse listens on `http://localhost:3002` by default. The application uses an in-memory development identity and workspace adapter, so local data resets when the process restarts. Set a strong `AUTH_SECRET` through the deployment provider's secret manager in production; do not expose it to browser code.
 
+The unauthenticated `GET /health` endpoint reports service liveness without returning workspace or identity data.
+
 ## Build and tests
 
 ```bash

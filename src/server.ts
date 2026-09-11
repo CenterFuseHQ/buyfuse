@@ -13,6 +13,7 @@ const workspace = new BuyerWorkspaceService(); const attempts = new Map<string, 
 createServer(async (request, response) => {
   try {
     const url = new URL(request.url ?? "/", urls.BUYFUSE);
+    if (request.method === "GET" && url.pathname === "/health") return send(response, 200, { status: "ok", service: "buyfuse" });
     if (request.method === "GET" && url.pathname === "/manifest.webmanifest") return send(response, 200, { name: "BuyFuse", short_name: "BuyFuse", display: "standalone", theme_color: PRODUCTS.BUYFUSE.themeColor, background_color: "#f6f4ee", start_url: "/" }, "application/manifest+json");
     if (request.method === "GET" && url.pathname === "/") return send(response, 200, renderBuyFuseDashboard(urls), "text/html; charset=utf-8");
     if (request.method === "GET" && url.pathname === "/loading") return send(response, 200, renderBuyFuseState("loading", urls), "text/html; charset=utf-8");
