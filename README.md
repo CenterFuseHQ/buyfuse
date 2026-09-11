@@ -1,11 +1,10 @@
 # BuyFuse
-
-BuyFuse is the buyer product in the CenterFuse ecosystem. It provides a private workspace for saving items, source links, notes, and purchase status. Its source repository, runtime, CI, and deployment are independent from the sibling CenterFuse and SellFuse repositories.
+BuyFuse is the canonical application source for the buyer product in the CenterFuse ecosystem. It provides a private workspace for saving items, source links, notes, and purchase status. Its source repository, runtime, CI, and deployment are independent from the sibling CenterFuse and SellFuse repositories.
 
 Related repositories:
 
-- [CenterFuseHQ/centerfuse](https://github.com/CenterFuseHQ/centerfuse) — umbrella platform and ecosystem
-- [CenterFuseHQ/sellfuse](https://github.com/CenterFuseHQ/sellfuse) — seller and reseller platform
+- [nnabdelshahid/CenterFuse](https://github.com/nnabdelshahid/CenterFuse) — umbrella platform and ecosystem
+- [nnabdelshahid/SellFuse](https://github.com/nnabdelshahid/SellFuse) — seller application
 
 ## Local development
 
