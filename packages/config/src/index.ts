@@ -51,14 +51,16 @@ export type ProductUrls = Readonly<Record<ProductId, string>>;
 export function resolveProductUrls(
   env: Record<string, string | undefined>,
 ): ProductUrls {
+  const hosted = env.VERCEL === "1" || env.VERCEL_ENV === "production";
   return {
-    CENTERFUSE: normalizeUrl(env.CENTERFUSE_URL, PRODUCTS.CENTERFUSE.defaultUrl),
-    SELLFUSE: normalizeUrl(env.SELLFUSE_URL, PRODUCTS.SELLFUSE.defaultUrl),
-    BUYFUSE: normalizeUrl(env.BUYFUSE_URL, PRODUCTS.BUYFUSE.defaultUrl),
+    CENTERFUSE: normalizeUrl(env.CENTERFUSE_URL, hosted ? "" : PRODUCTS.CENTERFUSE.defaultUrl),
+    SELLFUSE: normalizeUrl(env.SELLFUSE_URL, hosted ? "" : PRODUCTS.SELLFUSE.defaultUrl),
+    BUYFUSE: normalizeUrl(env.BUYFUSE_URL, hosted ? "" : PRODUCTS.BUYFUSE.defaultUrl),
   };
 }
 
 function normalizeUrl(value: string | undefined, fallback: string): string {
+  if (!value?.trim() && !fallback) return "";
   const parsed = new URL(value?.trim() || fallback);
   if (!["http:", "https:"].includes(parsed.protocol))
     throw new Error("Product URLs must use HTTP or HTTPS");
