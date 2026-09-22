@@ -1,4 +1,9 @@
 # BuyFuse
+
+## Live Web App
+
+🌐 **Live:** https://buyfuse.vercel.app
+
 BuyFuse is the canonical application source for the buyer product in the CenterFuse ecosystem. It provides a private workspace for saving items, source links, notes, and purchase status. Its source repository, runtime, CI, and deployment are independent from the sibling CenterFuse and SellFuse repositories.
 
 Related repositories:
