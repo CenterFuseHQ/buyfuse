@@ -34,3 +34,7 @@ npm run build
 The root `Dockerfile` builds and starts BuyFuse independently. Configure `CENTERFUSE_URL`, `SELLFUSE_URL`, and `BUYFUSE_URL` for ecosystem navigation. The additive cross-product database migration is owned and run once by the CenterFuse platform repository; it is intentionally not duplicated here.
 
 The current authentication implementation is repository-local and preserves the existing BuyFuse issuer/audience behavior. A future durable identity integration can replace the service boundary without requiring filesystem imports from another product repository.
+
+## Live Deployment
+
+**Production:** https://buyfuse.vercel.app
