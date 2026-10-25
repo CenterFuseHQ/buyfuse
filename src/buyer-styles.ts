@@ -1,5 +1,5 @@
 /** BuyFuse-only visual layer; never imported by the parent platform or SellFuse. */
-export const buyerStyles = String.raw\`
+export const buyerStyles = String.raw`
 .bf-app{--bf-ink:#21183c;--bf-muted:#625b79;--bf-paper:#faf9ff;--bf-panel:#fff;--bf-line:#e8e1f5;--bf-accent:#6546dc;--bf-soft:#f0ecff;display:block;min-height:100vh;background:radial-gradient(circle at 83% 5%,#ede9ff,transparent 42%),var(--bf-paper);color:var(--bf-ink);color-scheme:light}
 .bf-app:has(#bf-dark:checked){--bf-ink:#f8f5ff;--bf-muted:#d0c7e8;--bf-paper:#151126;--bf-panel:#261f3b;--bf-line:#51426d;--bf-accent:#c1b0ff;--bf-soft:#362953;background:radial-gradient(circle at 83% 5%,#39294e,transparent 42%),var(--bf-paper);color-scheme:dark}
 .bf-app .family-nav{max-width:74rem}.bf-app .brand,.bf-app .nav-links a{color:var(--bf-ink)}
@@ -44,4 +44,4 @@ export const buyerStyles = String.raw\`
 .bf-app .family-nav .nav-links a:not([aria-current=page]){display:inline-flex}
 @media(max-width:45rem){.bf-splash,.bf-feature-strip,.bf-demo-grid,.bf-auth-grid,.bf-workspace-grid{grid-template-columns:1fr}.bf-collage{transform:none}.bf-app .family-nav{display:grid;justify-content:stretch;gap:.7rem}.bf-app .nav-links{justify-content:flex-start}.bf-app .display{font-size:clamp(2.6rem,12vw,4.3rem)}}
 @media(prefers-reduced-motion:reduce){.bf-app *{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
-\`;
+`;
