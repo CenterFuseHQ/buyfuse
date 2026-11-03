@@ -29,19 +29,21 @@ export async function readJsonBody(
   const chunks: Buffer[] = [];
   let size = 0;
   let tooLarge = false;
-  for await (const chunk of source) {
-    if (tooLarge) continue;
-    const bytes = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+  const iterator = source[Symbol.asyncIterator]();
+  for (;;) {
+    const next = await iterator.next();
+    if (next.done) break;
+    const bytes = Buffer.isBuffer(next.value) ? next.value : Buffer.from(next.value);
     size += bytes.byteLength;
     if (size > maximumBytes) {
-      tooLarge = true;
       chunks.length = 0;
-      continue;
+      // The HTTP handler will send 413 and close the connection. Do not wait
+      // for the sender to finish an oversized body before returning.
+      throw new RequestBodyTooLargeError();
     }
     chunks.push(bytes);
   }
 
-  if (tooLarge) throw new RequestBodyTooLargeError();
   if (!size) return {};
   try {
     return JSON.parse(Buffer.concat(chunks, size).toString("utf8")) as unknown;

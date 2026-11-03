@@ -45,14 +45,15 @@ describe("request security helpers", () => {
   });
 
   it("rejects oversized and malformed bodies without retaining their contents", async () => {
-    let drained = false;
+    let chunksRead = 0;
     async function* oversizedChunks(): AsyncGenerator<string> {
       yield "private-";
+      chunksRead += 1;
       yield "marker";
-      drained = true;
+      chunksRead += 1;
     }
     await expect(readJsonBody(oversizedChunks(), 8)).rejects.toBeInstanceOf(RequestBodyTooLargeError);
-    expect(drained).toBe(true);
+    expect(chunksRead).toBe(1);
     await expect(readJsonBody(chunks("{private-marker"), 32)).rejects.toBeInstanceOf(InvalidJsonBodyError);
   });
 });
