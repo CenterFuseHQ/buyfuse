@@ -6,4 +6,11 @@ describe("BuyFuse workspace", () => {
   it("starts useful and empty, then stores a buyer item", async () => { const service = new BuyerWorkspaceService(); expect(service.get(buyer).savedItems).toEqual([]); const item = await service.save(buyer, { title: "Dining table", notes: "Measure doorway" }); expect(service.get(buyer).savedItems[0]?.title).toBe("Dining table"); expect(service.updateStatus(buyer, item.id, "PURCHASED").status).toBe("PURCHASED"); });
   it("protects buyer mutations from a seller-only entitlement", async () => { const service = new BuyerWorkspaceService(); await expect(service.save({ userId: "seller", entitlements: [sellFuseEntitlement] }, { title: "Item" })).rejects.toThrow("FORBIDDEN"); });
   it("validates untrusted URLs", async () => { await expect(new BuyerWorkspaceService().save(buyer, { title: "Item", sourceUrl: "javascript:alert(1)" })).rejects.toThrow(); });
+  it("accepts ordinary HTTP(S) links and rejects credential-bearing links", async () => {
+    const service = new BuyerWorkspaceService();
+    await expect(service.save(buyer, { title: "Item", sourceUrl: "https://shop.example/item/42?color=blue" })).resolves.toMatchObject({ sourceUrl: "https://shop.example/item/42?color=blue" });
+    await expect(service.save(buyer, { title: "Item", sourceUrl: "https://buyer:password@shop.example/item" })).rejects.toThrow();
+    await expect(service.save(buyer, { title: "Item", sourceUrl: "https://shop.example/item?access_token=secret" })).rejects.toThrow();
+    await expect(service.save(buyer, { title: "Item", sourceUrl: "https://shop.example/item#access_token=secret" })).rejects.toThrow();
+  });
 });

@@ -21,7 +21,7 @@ copy .env.example .env
 npm run dev
 ```
 
-BuyFuse listens on `http://localhost:3002` by default. The application uses an in-memory development identity and workspace adapter, so local data resets when the process restarts. Set a strong `AUTH_SECRET` through the deployment provider's secret manager in production; do not expose it to browser code.
+BuyFuse listens on `http://localhost:3002` by default. The current account identity and workspace adapters are in memory in every environment. Account records and saved items can reset when the service restarts, so account mode is not ready for customer data until durable identity and workspace storage are configured. Users can download and restore JSON backups. The browser-only workspace stores entries in local browser storage; it does not sync across devices, is not encrypted, and is removed when site data is cleared. Set a strong `AUTH_SECRET` through the deployment provider's secret manager in production; do not expose it to browser code.
 
 The unauthenticated `GET /health` endpoint reports service liveness without returning workspace or identity data.
 

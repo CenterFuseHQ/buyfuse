@@ -5,7 +5,12 @@ import { z } from "zod";
 
 export const SavedItemInputSchema = z.object({
   title: z.string().trim().min(2).max(200),
-  sourceUrl: z.url().max(2000).refine((value) => ["http:", "https:"].includes(new URL(value).protocol), "Source URL must use HTTP or HTTPS").optional(),
+  sourceUrl: z.url().max(2000).refine((value) => {
+    const url = new URL(value);
+    const sensitiveKey = /(?:access[_-]?token|token|secret|signature|(^|[^a-z])sig(?:nature)?(?:[^a-z]|$)|api[_-]?key|access[_-]?key|auth(?:orization)?|credential|password|passwd|session)/i;
+    return ["http:", "https:"].includes(url.protocol) && !url.username && !url.password && !url.hash &&
+      ![...url.searchParams.keys()].some((key) => sensitiveKey.test(key));
+  }, "Source URL must be a safe HTTP(S) link without embedded credentials or sensitive URL parameters").optional(),
   notes: z.string().trim().max(2000).optional(),
 });
 export const SavedItemStatusSchema = z.enum(["CONSIDERING", "PURCHASED", "ARCHIVED"]);
