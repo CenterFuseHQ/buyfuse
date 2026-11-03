@@ -28,7 +28,6 @@ export async function readJsonBody(
 
   const chunks: Buffer[] = [];
   let size = 0;
-  let tooLarge = false;
   const iterator = source[Symbol.asyncIterator]();
   for (;;) {
     const next = await iterator.next();
