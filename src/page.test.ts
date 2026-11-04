@@ -3,6 +3,11 @@ import { Script } from "node:vm";
 import { buyerClientScript } from "./buyer-client.js";
 import { renderBuyFuseDashboard, renderBuyFuseState } from "./page.js";
 describe("BuyFuse application", () => {
+  it("adds the supplied CSP nonce to the only inline application script", () => {
+    const html = renderBuyFuseDashboard(undefined, "nonce/123+safe==");
+    expect(html).toContain('<script nonce="nonce/123+safe==">');
+  });
+
   it("preserves real authenticated item workflows and accessibility affordances", () => {
     const html = renderBuyFuseDashboard();
     expect(html).toContain("Save an item");
