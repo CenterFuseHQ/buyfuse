@@ -1,6 +1,5 @@
 import { PRODUCTS, resolveProductUrls, type ProductUrls } from "@centerfuse/config";
 import { renderDocument, renderFamilyFooter, renderFamilyHeader, renderState } from "@centerfuse/ui";
-import { buyerClientScript } from "./buyer-client.js";
 import { buyerStyles } from "./buyer-styles.js";
 
 export function renderBuyFuseDashboard(urls: ProductUrls = resolveProductUrls({}), scriptNonce?: string): string {
